@@ -1,4 +1,4 @@
-# simple-calendar-wx
+# Simple Calendar Wx
 A weather hex flower macro for the Simple Calendar module in FoundryVTT.
 
 This macro will generate basic weather results and add them as a note for the current day in Simple Calendar.
