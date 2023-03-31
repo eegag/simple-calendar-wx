@@ -274,40 +274,17 @@ async function setWxResults(season) {
 async function generateWx(wxResults) {
 
 	// Get previous day, month, year in correct format
-	var currentDay = SimpleCalendar.api.getCurrentDay().numericRepresentation - 1;
-
-	if (SimpleCalendar.api.getCurrentMonth().numericRepresentation == -1) {
-		var currentMonth = 0;
-	} else if (SimpleCalendar.api.getCurrentMonth().numericRepresentation == -2) {
-		var currentMonth = 6;
-	} else if (SimpleCalendar.api.getCurrentMonth().numericRepresentation < 6) {
-		var currentMonth = SimpleCalendar.api.getCurrentMonth().numericRepresentation;
-	} else {
-		var currentMonth = SimpleCalendar.api.getCurrentMonth().numericRepresentation + 1;
-	}
-
-	var currentYear = SimpleCalendar.api.getCurrentYear().numericRepresentation;
-
-	if (currentMonth == 1 || currentMonth == 7 && currentDay == 0) {
-		var previousWxDay = 6;
-	} else if (currentDay == 0) {
-		var previousWxDay = 34;
-	} else {
-		var previousWxDay = currentDay - 1;
-	}
-
-	if (currentDay == 0) {
-		var previousWxMonth = currentMonth - 1;
-	} else {
-		var previousWxMonth = currentMonth;
-	}
-
-	if (currentDay == 0 && currentMonth == 0) {
-		var previousWxYear = currentYear - 1;
-		var previousWxMonth = 11;
-	} else {
-		var previousWxYear = currentYear;
-	}
+	var currentDay = SimpleCalendar.api.currentDateTime().day;
+	var currentMonth = SimpleCalendar.api.currentDateTime().month;
+	var currentYear = SimpleCalendar.api.currentDateTime().year;
+	
+	var currentTimestamp = SimpleCalendar.api.dateToTimestamp({});
+	var timeInterval = SimpleCalendar.api.timestampPlusInterval(0, {day: 1});
+	var previousTimestamp = currentTimestamp - timeInterval;
+	
+	var previousWxDay = SimpleCalendar.api.timestampToDate(previousTimestamp).day;
+	var previousWxMonth = SimpleCalendar.api.timestampToDate(previousTimestamp).month;
+	var previousWxYear = SimpleCalendar.api.timestampToDate(previousTimestamp).year;
 
 	// Get hex flower result from previous day
 	const previousDayNotes = SimpleCalendar.api.getNotesForDay(previousWxYear, previousWxMonth, previousWxDay);
